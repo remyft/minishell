@@ -28,7 +28,7 @@ LIB_LINK = -L $(LIB_PATH) -lft
 INC_DIR = include
 INCS = -I $(LIB_PATH)/ -I $(INC_DIR)
 
-SRCS =	src/minishell			\
+SRCS =	src/minishell.c			\
 
 OK =      $(GREEN)[OK]$(RESET)		
 
