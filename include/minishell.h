@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 20:49:03 by rfontain          #+#    #+#             */
-/*   Updated: 2018/09/28 20:50:09 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/02 20:01:36 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,9 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
+
+char			**parsing(char *cmd);
+
+void			deal_cmd(char **cmd, char **env);
 
 #endif

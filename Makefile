@@ -6,7 +6,7 @@
 #    By: rfontain <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/28 20:50:45 by rfontain          #+#    #+#              #
-#    Updated: 2018/09/28 20:50:48 by rfontain         ###   ########.fr        #
+#    Updated: 2018/10/02 19:17:02 by rfontain         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,9 @@ LIB_LINK = -L $(LIB_PATH) -lft
 INC_DIR = include
 INCS = -I $(LIB_PATH)/ -I $(INC_DIR)
 
-SRCS =	src/minishell.c			\
+SRCS =	src/parsing.c			\
+		src/minishell.c			\
+		src/deal_commande.c		\
 
 OK =      $(GREEN)[OK]$(RESET)		
 
