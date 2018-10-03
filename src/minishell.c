@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 20:53:59 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/02 20:13:15 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/03 19:01:24 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int		main(int ac, char **av, char **ep)
 		ft_putstr("<$ ");
 		get_next_line(1, &line);
 		parse = parsing(line);
-		deal_cmd(parse, env);
+		if (parse)
+			deal_cmd(parse, env);
 	}
 	return (0);
 }
