@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/02 19:17:15 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/06 18:38:08 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/06 19:48:07 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,6 @@ void		deal_cmd(char **cmd, char **env)
 		ft_cd(env, cmd);
 	else if (ft_strcmp(cmd[0], "unsetenv") == 0)
 		ft_unsetenv(env, cmd);
-	else
-		ft_exec(env, cmd);
+	else if (!ft_exec(env, cmd))
+		ft_putend(cmd[0], " : command not found.\n");
 }

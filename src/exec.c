@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/06 16:15:36 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/06 19:39:25 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/06 19:47:23 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int			ft_exec(char **env, char **cmd)
 	pid = fork();
 	if (pid < 0)
 	{
-		free(path);
+		ft_putendl("Something happend, fork failed.");
 		return (0);
 	}
 	else if (pid == 0)
