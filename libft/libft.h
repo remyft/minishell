@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/04 23:07:03 by rfontain          #+#    #+#             */
-/*   Updated: 2018/09/18 01:48:42 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/06 09:10:14 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef struct		s_list
 	void			*content;
 	size_t			content_size;
 	struct s_list	*next;
-	struct s_list	*prev;
 }					t_list;
 
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
@@ -96,7 +95,7 @@ void				ft_putstrstr(char **str, char c);
 void				ft_putstrstr_fd(char **str, char c, int fd);
 void				ft_strrev(char *str);
 
-char				*ft_strjoinch(char const *s1, char c);
+char				*ft_strjoinch(char *s1, char c);
 int					ft_copyuntil(char **dst, char *src, char c);
 char				*ft_strjoinfree(char *s1, char *s2, int i);
 
@@ -108,11 +107,15 @@ char				*ft_itoa_base(int nb, int base);
 char				*ft_convert_base(int nb, int base, int i);
 int					ft_nblen_base(unsigned int nb, int base);
 
-int					read_line(int fd, t_list *current);
+int					read_line(int fd, t_list *file);
 int					get_next_line(int fd, char **line);
 
 int					ft_abs(int n);
 void				ft_putend(char *str, char *end);
 void				ft_putnbend(int nb, char *str);
 void				ft_putendnb(char *str, int nb);
+
+char				**ft_strsplit_ws(char const *s);
+void				ft_find(char *src, char *to_find, int *beg, int *end);
+
 #endif

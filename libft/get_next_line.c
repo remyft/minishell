@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 13:56:40 by rfontain          #+#    #+#             */
-/*   Updated: 2018/06/03 16:38:01 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/09/27 16:32:13 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int					read_line(int fd, t_list *file)
 	while ((n = read(fd, buff, BUFF_SIZE)) > 0)
 	{
 		buff[n] = '\0';
-		if (!(file->content = ft_strjoin(file->content, buff)))
+		if (!(file->content = ft_strjoinfree(file->content, buff, 1)))
 			return (0);
 		if (ft_occuc(buff, CHAR_SEP))
 			break ;
@@ -51,7 +51,8 @@ static char			*ft_ralloc(char *str1, char *str2, int n)
 		return (NULL);
 	*(str1 + n) = '\0';
 	str1 = ft_strncpy(str1, str2, n);
-	free(str2);
+	if (str2)
+		free(str2);
 	return (str1);
 }
 
