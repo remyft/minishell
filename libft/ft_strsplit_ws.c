@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/06 07:55:26 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/08 19:00:02 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/08 19:39:13 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static	int		ft_strlensp(const char *str)
 	int i;
 
 	i = 0;
-	while (!((*str >= 8 && *str <= 13) || *str == 32))
+	while (*str && !((*str >= 8 && *str <= 13) || *str == 32))
 	{
 		if (*str == '\0')
 			break ;
@@ -47,32 +47,31 @@ static	int		ft_strlensp(const char *str)
 	}
 	return (i);
 }
-#include <stdio.h>
+
 char			**ft_strsplit_ws(char const *s)
 {
 	char	**split;
 	int		k;
 	int		nbword;
+	int		i;
 
 	if (s == NULL)
 		return (NULL);
 	if ((split = (char**)malloc(sizeof(char*) * (ft_countw(s) + 1))) == NULL)
 		return (NULL);
 	nbword = ft_countw(s);
-	split[nbword + 1] = 0;
 	k = 0;
 	while (nbword--)
 	{
-		while ((*s >= 8 && *s <= 13) || *s == 32)
+		if (!(split[k] = malloc(sizeof(char) * (ft_strlensp(s) + 1))))
+			return (NULL);
+		while (*s && ((*s >= 8 && *s <= 13) || *s == 32))
 			s++;
-		if (*s && !((*s >= 8 && *s <= 13) || *s == 32))
-		{
-			printf("%d\n", ft_strlensp(s));
-			if ((split[k] = ft_strsub(s, 0, ft_strlensp(s))) == NULL)
-				return (NULL);
-			s += ft_strlensp(s) + 1;
-			k++;
-		}
+		i = 0;
+		while (*s && !((*s >= 8 && *s <= 13) || *s == 32))
+			split[k][i++] = *s++;
+		split[k][i] = '\0';
+		k++;
 	}
 	split[k] = NULL;
 	return (split);

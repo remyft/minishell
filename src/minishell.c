@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 20:53:59 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/08 18:56:54 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/08 19:43:26 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,11 +121,10 @@ int		main(int ac, char **av, char **ep)
 		while (parse && parse[++i])
 		{
 			cmd = ft_strsplit_ws(parse[i]);
-			ft_putendl(cmd[1]);
 			if (!(get_var(env, cmd)))
 				continue ;
 			deal_cmd(cmd, &env);
-			free_tab(&cmd);
+			//free_tab(&cmd);
 		}
 		if (parse)
 			free_tab(&parse);

@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/08 03:11:22 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/08 16:21:38 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/08 19:38:43 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,32 +47,31 @@ static	int		ft_strlensp(const char *str, char c)
 	}
 	return (i);
 }
-#include <stdio.h>
 
 char			**ft_strsplit(char const *s, char c)
 {
 	char	**split;
 	int		k;
 	int		nbword;
+	int		i;
 
 	if (s == NULL)
 		return (NULL);
 	if ((split = (char**)malloc(sizeof(char*) * (ft_countw(s, c) + 1))) == NULL)
 		return (NULL);
 	nbword = ft_countw(s, c);
-	split[nbword + 1] = 0;
 	k = 0;
 	while (nbword--)
 	{
+		if (!(split[k] = malloc(sizeof(char) * (ft_strlensp(s, c) + 1))))
+			return (NULL);
 		while (*s == c)
 			s++;
-		if (*s != c && *s != '\0')
-		{
-			if ((split[k] = ft_strsub(s, 0, ft_strlensp(s, c))) == NULL)
-				return (NULL);
-			s += ft_strlensp(s, c) + 1;
-			k++;
-		}
+		i = 0;
+		while (*s != c && *s != '\0')
+			split[k][i++] = *s++;
+		split[k][i] = '\0';
+		k++;
 	}
 	split[k] = NULL;
 	return (split);
