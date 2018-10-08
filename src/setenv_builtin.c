@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/06 07:43:19 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/08 16:40:06 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/08 18:56:52 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ char		*get_env(char **env, char *to_get)
 void	ft_setenv(char ***env, char *new, int len)
 {
 	int i;
+	char **ptr;
 
 	i = 1;
 	if (len == 2 && ft_occuc(new, '='))
@@ -100,12 +101,11 @@ void	ft_setenv(char ***env, char *new, int len)
 			}
 			i++;
 		}
-		ft_putnbend(i, " : i\n");
-		*env = ft_ralloc(env, 1);
-		i = 0;
+		ptr = *env;
+		ptr = ft_ralloc(&ptr, 1);
+		*env = ptr;
 		(*env)[i] = ft_strdup(new);
 		(*env)[++i] = NULL;
-		i = 0;
 	}
 	else if (len != 2)
 		ft_putendl("setenv : Too many arguments");

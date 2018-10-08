@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/06 07:55:26 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/06 08:05:51 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/08 19:00:02 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static	int		ft_strlensp(const char *str)
 	}
 	return (i);
 }
-
+#include <stdio.h>
 char			**ft_strsplit_ws(char const *s)
 {
 	char	**split;
@@ -67,6 +67,7 @@ char			**ft_strsplit_ws(char const *s)
 			s++;
 		if (*s && !((*s >= 8 && *s <= 13) || *s == 32))
 		{
+			printf("%d\n", ft_strlensp(s));
 			if ((split[k] = ft_strsub(s, 0, ft_strlensp(s))) == NULL)
 				return (NULL);
 			s += ft_strlensp(s) + 1;

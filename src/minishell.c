@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 20:53:59 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/08 16:34:36 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/08 18:56:54 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,17 +114,21 @@ int		main(int ac, char **av, char **ep)
 		ft_putend_cl(ft_strrchr(getcwd(buff, 4097), '/') + 1, RED,  " $> ", BLUE);
 		ft_putstr(WHITE);
 		line = get_line(1);
-		parse = ft_strsplit(line, ';');
+		parse = NULL;
+		if (line)
+			parse = ft_strsplit(line, ';');
 		i = -1;
-		while (parse[++i])
+		while (parse && parse[++i])
 		{
 			cmd = ft_strsplit_ws(parse[i]);
+			ft_putendl(cmd[1]);
 			if (!(get_var(env, cmd)))
 				continue ;
 			deal_cmd(cmd, &env);
 			free_tab(&cmd);
 		}
-		free_tab(&parse);
+		if (parse)
+			free_tab(&parse);
 		if (line)
 			free(line);
 	}

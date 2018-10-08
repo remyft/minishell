@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/06 05:48:08 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/08 16:40:30 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/08 18:48:36 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,8 @@ void	free_tab(char ***tab)
 
 	i = -1;
 	while ((*tab)[++i])
-	{
 		free((*tab)[i]);
-		(*tab)[i] = NULL;
-	}
 	free(*tab);
-	*tab = NULL;
 }
 
 char	**ft_ralloc(char ***env, int len)
@@ -87,8 +83,7 @@ char	**ft_ralloc(char ***env, int len)
 	while ((*env)[++i] && i < max + len)
 		tmp[i] = ft_strdup((*env)[i]);
 	tmp[i] = NULL;
-	free_tab(env);
-	i = 0;
+//	free_tab(env);
 	return (tmp);
 }
 
