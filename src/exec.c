@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/06 16:15:36 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/06 19:47:23 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/08 13:25:57 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,37 @@ static char	*get_path(char **env, char *cmd)
 	char		*toget;
 	char		*path;
 	int			i;
+	int			j;
 	struct stat	stat;
 
+	j = 0;
 	toget = get_env(env, "PATH");
 	while (1)
 	{
 		i = 0;
-		if (!(path = malloc(sizeof(char) * (ft_strlen_ch(toget, ':') + 1))))
+		if (!(path = malloc(sizeof(char) * (ft_strlen_ch(&toget[j], ':') + 1))))
 			return (NULL);
-		while (toget[i] && toget[i] != ':')
+		while (toget[i + j] && toget[i + j] != ':')
 		{
-			path[i] = toget[i];
+			path[i] = toget[i + j];
 			i++;
 		}
 		path[i] = '\0';
 		path = ft_strjoinfree(path, "/", 1);
 		path = ft_strjoinfree(path, cmd, 1);
 		if (lstat(path, &stat) != -1)
+		{
+			free(toget);
 			return (path);
+		}
 		free(path);
-		if (!ft_occuc(toget, ':'))
+		if (!ft_occuc(&toget[j], ':'))
+		{
+			free(toget);
 			return (NULL);
-		toget += !(toget + ft_strlen_ch(toget, ':')) ? ft_strlen_ch(toget, ':') : ft_strlen_ch(toget, ':') + 1;
+		}
+		j += !(toget[j + ft_strlen_ch(toget, ':')])
+			? ft_strlen_ch(&toget[j], ':') : ft_strlen_ch(&toget[j], ':') + 1;
 	}
 	return (NULL);
 }
@@ -58,12 +67,17 @@ int			ft_exec(char **env, char **cmd)
 	pid_t	pid;
 	char	*path;
 	int		status;
+	int i;
 
-	if (!(path = get_path(env, cmd[0])))
-		return (0);
-	free(cmd[0]);
-	cmd[0] = ft_strdup(path);
-	free(path);
+	i = -1;
+	if (cmd[0][0] != '/')
+	{
+		if (!(path = get_path(env, cmd[0])))
+			return (0);
+		free(cmd[0]);
+		cmd[0] = ft_strdup(path);
+		free(path);
+	}
 	pid = fork();
 	if (pid < 0)
 	{
@@ -73,6 +87,8 @@ int			ft_exec(char **env, char **cmd)
 	else if (pid == 0)
 	{
 		execve(cmd[0], cmd, env);
+		free_tab(&env);
+		free_tab(&cmd);
 		exit(0);
 	}
 	else if (pid > 0)

@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 20:53:59 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/06 14:59:15 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/08 16:34:36 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		cmp_strpart(char *src, char *str, int *beg)
 		*beg += 1;
 	}
 	if (src[i] == '=')
-		if (!str[*beg + 1] || !ft_isalnum(str[*beg + 1]))
+		if (!str[*beg] || !ft_isalnum(str[*beg]))
 			return (i);
 	return (0);
 }
@@ -46,9 +46,7 @@ char	*test_var(char **env, char *cmd)
 	while (env[i])
 	{
 		end = beg;
-		if (!(to_cp = cmp_strpart(env[i], cmd, &end)))
-			i++;
-		else
+		if ((to_cp = cmp_strpart(env[i], cmd, &end)))
 		{
 			ret = ft_strnew(to_cp + 2);
 			ret[0] = '$';
@@ -56,6 +54,7 @@ char	*test_var(char **env, char *cmd)
 			ret[to_cp + 1] = '\0';
 			return (ret);
 		}
+		i++;
 	}
 	return (NULL);
 }
@@ -73,7 +72,7 @@ int		get_var(char **env, char **cmd)
 		{
 			if (!(tmp = test_var(env, cmd[i])))
 			{
-				ft_putend(ft_strstr(cmd[i], "$"), " : Undefined variable.");
+				ft_putend(ft_strstr(cmd[i], "$"), " : Undefined variable.\n");
 				return (0);
 			}
 			else
@@ -81,7 +80,7 @@ int		get_var(char **env, char **cmd)
 				var = ft_strdup(cmd[i]);
 				free(cmd[i]);
 				cmd[i] = replace_str(var, tmp, (rep = get_env(env, &tmp[1])));
-				//free(tmp);
+				free(tmp);
 			}
 		}
 		else if (cmd[i][0] == '~')
@@ -97,34 +96,35 @@ int		get_var(char **env, char **cmd)
 int		main(int ac, char **av, char **ep)
 {
 	char	*line;
-	char	*env[100];
+	char	**env;
 	int		i;
 	char	**parse;
+	char	**cmd;
 	char	buff[4097];
 
 	i = 0;
 	(void)ac;
 	(void)av;
-	env[0] = get_env(ep, "HOME");
-	while (ep[++i])
-		env[i] = ft_strdup(ep[i]);
-	env[i] = NULL;
+	i = 0;
+	env = collect_env(ep);
 	line = NULL;
 	while (1)
 	{
-		ft_putend(getcwd(buff, 4097), "$> ");
+		ft_putstr(RESET);
+		ft_putend_cl(ft_strrchr(getcwd(buff, 4097), '/') + 1, RED,  " $> ", BLUE);
+		ft_putstr(WHITE);
 		line = get_line(1);
-		parse = ft_strsplit_ws(line);
-		if (parse)
+		parse = ft_strsplit(line, ';');
+		i = -1;
+		while (parse[++i])
 		{
-			if (!(get_var(env, parse)))
+			cmd = ft_strsplit_ws(parse[i]);
+			if (!(get_var(env, cmd)))
 				continue ;
-			deal_cmd(parse, env);
-			i = 0;
-			while (parse[i])
-				free(parse[i++]);
-			free(parse);
+			deal_cmd(cmd, &env);
+			free_tab(&cmd);
 		}
+		free_tab(&parse);
 		if (line)
 			free(line);
 	}

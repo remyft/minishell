@@ -6,22 +6,58 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/06 07:43:19 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/06 10:13:17 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/08 16:40:06 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+char		**collect_env(char **ep)
+{
+	char	**env;
+	char	*tmp;
+	int		ntmp;
+	int		i;
+
+	i = -1;
+	if (!(env = (char**)malloc(sizeof(char*) * (get_tab_len(ep) + 2))))
+	{
+		ft_putendl("Failed to collect the environment.\n");
+		exit(2);
+	}
+	while (ep[++i])
+	{
+		if (ft_strstr(ep[i], "HOME") == ep[i] && ep[i][4] == '=')
+			env[0] = ft_strdup(ep[i]);
+		env[i + 1] = ft_strdup(ep[i]);
+	}
+	env[i + 1] = NULL;
+	tmp = get_env(env, "SHLVL");
+	ntmp = ft_atoi(tmp);
+	free(tmp);
+	tmp = ft_strjoin("SHLVL=", ft_itoa(ntmp + 1));
+	ft_setenv(&env, tmp, 2);
+	return (env);
+}
+
 static int	cmp_env(char *env, char *new)
 {
-	int i;
+	int		i;
+	char	*tmp;
 
 	i = 0;
-	while (env[i] && env[i] == new[i] && env[i] != '=')
+	if (!ft_occuc(new, '='))
+		tmp = ft_strjoin(new, "=");
+	else
+		tmp = ft_strdup(new);
+	while (env[i] && env[i] == tmp[i] && env[i] != '=')
 		i++;
-	if (env[i] == '=')
+	if (i != 0 && env[i] == '=' && env[i] == tmp[i])
+	{
+		free(tmp);
 		return (1);
-	i = 0;
+	}
+	free(tmp);
 	return (0);
 }
 
@@ -32,10 +68,8 @@ char		*get_env(char **env, char *to_get)
 	char	*tmp;
 
 	i = 0;
-	tmp = ft_strjoin(to_get, "=");
-	while (env[i] && !cmp_env(env[i], tmp))
+	while (env[i] && !cmp_env(env[i], to_get))
 		i++;
-	free(tmp);
 	tmp = NULL;
 	if (env[i])
 	{
@@ -47,62 +81,63 @@ char		*get_env(char **env, char *to_get)
 	return (tmp);
 }
 
-void		ft_setenv(char **env, char *new, int len)
+void	ft_setenv(char ***env, char *new, int len)
 {
 	int i;
 
 	i = 1;
-	if (len == 2)
+	if (len == 2 && ft_occuc(new, '='))
 	{
-		while (env[i])
+		while ((*env)[i])
 		{
-			if (ft_strcmp(env[i], new) == 0)
+			if (ft_strcmp((*env)[i], new) == 0)
 				return ;
-			else if (cmp_env(env[i], new))
+			else if (cmp_env((*env)[i], new))
 			{
-				free(env[i]);
-				env[i] = !ft_occuc(new, '=') ? ft_strjoin(new, "=")
-					: ft_strdup(new);
+				free((*env)[i]);
+				(*env)[i] = ft_strdup(new);
 				return ;
 			}
 			i++;
 		}
-		env[i] = ft_occuc(new, '=') ? ft_strdup(new) : ft_strjoin(new, "=");
-		env[++i] = NULL;
+		ft_putnbend(i, " : i\n");
+		*env = ft_ralloc(env, 1);
+		i = 0;
+		(*env)[i] = ft_strdup(new);
+		(*env)[++i] = NULL;
+		i = 0;
 	}
-	else
+	else if (len != 2)
 		ft_putendl("setenv : Too many arguments");
 }
 
-void	ft_unsetenv(char **env, char **unset)
+void	ft_unsetenv(char ***env, char **unset)
 {
 	int		i;
 	int		j;
 	int		k;
 	char	*tmp;
-	char	*funset;
 
 	i = 1;
 	j = 1;
 	k = 0;
 	while (unset[++k])
 	{
-		funset = ft_strjoin(unset[k], "=");
-		while (env[j])
-			if (cmp_env(env[j], funset))
+		while ((*env)[j])
+			if (cmp_env((*env)[j], unset[k]))
 				j++;
 			else
 			{
-				tmp = ft_strdup(env[j]);
-				free(env[i]);
-				env[i] = ft_strdup(tmp);
+				tmp = ft_strdup((*env)[j]);
+				if ((*env)[i])
+					free((*env)[i]);
+				(*env)[i] = NULL;
+				(*env)[i] = ft_strdup(tmp);
 				free(tmp);
 				i++;
 				j++;
 			}
-		free(funset);
-		if (env[i])
-			free(env[i]);
-		env[i] = NULL;
+		if (i != j)
+			*env = ft_ralloc(env, -1);
 	}
 }

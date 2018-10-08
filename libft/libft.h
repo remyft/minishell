@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/04 23:07:03 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/06 09:10:14 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/08 10:29:11 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,15 @@
 
 # define BUFF_SIZE 32
 # define CHAR_SEP '\n'
+
+# define RED     "\x1b[31m"
+# define GREEN   "\x1b[32m"
+# define YELLOW  "\x1b[33m"
+# define BLUE    "\x1b[34m"
+# define MAGENTA "\x1b[35m"
+# define CYAN    "\x1b[36m"
+# define WHITE   "\x1b[1;37;40m"
+# define RESET   "\x1b[0m"
 
 typedef struct		s_list
 {
@@ -117,5 +126,11 @@ void				ft_putendnb(char *str, int nb);
 
 char				**ft_strsplit_ws(char const *s);
 void				ft_find(char *src, char *to_find, int *beg, int *end);
+
+void				ft_putstr_cl(char *str, char *color);
+void				ft_putnbr_cl(int nb, char *color);
+void				ft_putendl_cl(char *str, char *color);
+void				ft_putend_cl(char *str1, char *color1, char *str2,
+		char *color2);
 
 #endif

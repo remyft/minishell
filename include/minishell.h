@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 20:49:03 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/06 18:38:29 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/08 13:03:15 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,20 @@
 
 char	**parsing(char *cmd);
 
-void	deal_cmd(char **cmd, char **env);
+void	deal_cmd(char **cmd, char ***env);
 
 char	*get_line(int fd);
 char	*replace_str(char *path, char *src, char *replace);
+void	free_tab(char ***tab);
+int		get_tab_len(char **tab);
+char	**ft_ralloc(char ***env, int len);
 
-void	ft_setenv(char **env, char *new, int len);
+void	ft_setenv(char ***env, char *new, int len);
 char	*get_env(char **env, char *to_get);
-void	ft_unsetenv(char **env, char **unset);
+void	ft_unsetenv(char ***env, char **unset);
+char	**collect_env(char **ep);
 
-void	ft_cd(char **env, char **cmd);
+void	ft_cd(char ***env, char **cmd);
 
 int		ft_exec(char **env, char **cmd);
 
