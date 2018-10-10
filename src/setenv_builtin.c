@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/06 07:43:19 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/08 18:56:52 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/10 00:44:36 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@ char		**collect_env(char **ep)
 	tmp = get_env(env, "SHLVL");
 	ntmp = ft_atoi(tmp);
 	free(tmp);
-	tmp = ft_strjoin("SHLVL=", ft_itoa(ntmp + 1));
+	tmp = ft_strjoinfree("SHLVL=", ft_itoa(ntmp + 1), 2);
 	ft_setenv(&env, tmp, 2);
+	free(tmp);
 	return (env);
 }
 
@@ -84,7 +85,6 @@ char		*get_env(char **env, char *to_get)
 void	ft_setenv(char ***env, char *new, int len)
 {
 	int i;
-	char **ptr;
 
 	i = 1;
 	if (len == 2 && ft_occuc(new, '='))
@@ -101,9 +101,7 @@ void	ft_setenv(char ***env, char *new, int len)
 			}
 			i++;
 		}
-		ptr = *env;
-		ptr = ft_ralloc(&ptr, 1);
-		*env = ptr;
+		*env = ft_ralloc(env, 1);
 		(*env)[i] = ft_strdup(new);
 		(*env)[++i] = NULL;
 	}

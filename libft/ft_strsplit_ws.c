@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/06 07:55:26 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/08 19:39:13 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/09 19:41:02 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,19 @@ static	int		ft_countw(const char *str)
 static	int		ft_strlensp(const char *str)
 {
 	int i;
+	int j;
 
 	i = 0;
-	while (*str && !((*str >= 8 && *str <= 13) || *str == 32))
-	{
-		if (*str == '\0')
-			break ;
-		str++;
+	j = 0;
+	while (str[j] && ((str[j] >= 8 && str[j] <= 13) || str[j] == 32))
+		j++;
+	while (str[j + i] && !((str[j + i] >= 8 && str[j + i] <= 13)
+				|| str[j + i] == 32))
 		i++;
-	}
 	return (i);
 }
+
+#include <stdio.h>
 
 char			**ft_strsplit_ws(char const *s)
 {

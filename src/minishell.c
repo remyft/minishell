@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 20:53:59 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/08 19:43:26 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/10 05:11:39 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,11 @@ int		get_var(char **env, char **cmd)
 	return (1);
 }
 
+static void sig_hdlr(int sig)
+{
+	(void)sig;
+}
+
 int		main(int ac, char **av, char **ep)
 {
 	char	*line;
@@ -108,12 +113,13 @@ int		main(int ac, char **av, char **ep)
 	i = 0;
 	env = collect_env(ep);
 	line = NULL;
+	signal(SIGINT, &sig_hdlr);
 	while (1)
 	{
 		ft_putstr(RESET);
 		ft_putend_cl(ft_strrchr(getcwd(buff, 4097), '/') + 1, RED,  " $> ", BLUE);
 		ft_putstr(WHITE);
-		line = get_line(1);
+		line = get_line(0);
 		parse = NULL;
 		if (line)
 			parse = ft_strsplit(line, ';');
@@ -124,7 +130,7 @@ int		main(int ac, char **av, char **ep)
 			if (!(get_var(env, cmd)))
 				continue ;
 			deal_cmd(cmd, &env);
-			//free_tab(&cmd);
+			free_tab(&cmd);
 		}
 		if (parse)
 			free_tab(&parse);

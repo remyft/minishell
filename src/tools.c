@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/06 05:48:08 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/08 18:48:36 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/10 00:17:03 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	**ft_ralloc(char ***env, int len)
 	while ((*env)[++i] && i < max + len)
 		tmp[i] = ft_strdup((*env)[i]);
 	tmp[i] = NULL;
-//	free_tab(env);
+	free_tab(env);
 	return (tmp);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/08 03:11:22 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/08 19:38:43 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/09 19:44:43 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,14 @@ static	int		ft_countw(const char *str, char c)
 static	int		ft_strlensp(const char *str, char c)
 {
 	int i;
+	int j;
 
 	i = 0;
-	while (*str != c)
-	{
-		if (*str == '\0')
-			break ;
-		str++;
+	j = 0;
+	while (str[j] && str[j] == c)
+		j++;
+	while (str[j + i] && str[j + i] != c)
 		i++;
-	}
 	return (i);
 }
 
@@ -65,7 +64,7 @@ char			**ft_strsplit(char const *s, char c)
 	{
 		if (!(split[k] = malloc(sizeof(char) * (ft_strlensp(s, c) + 1))))
 			return (NULL);
-		while (*s == c)
+		while (*s && *s == c)
 			s++;
 		i = 0;
 		while (*s != c && *s != '\0')
