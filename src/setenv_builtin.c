@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/06 07:43:19 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/10 00:44:36 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/11 05:39:09 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ char		**collect_env(char **ep)
 	int		i;
 
 	i = -1;
-	if (!(env = (char**)malloc(sizeof(char*) * (get_tab_len(ep) + 2))))
+	if (!ep || !(env = (char**)malloc(sizeof(char*) * (get_tab_len(ep) + 2))))
 	{
-		ft_putendl("Failed to collect the environment.\n");
+		ft_putendl("Failed to collect the environment.");
 		exit(2);
 	}
 	while (ep[++i])

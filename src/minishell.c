@@ -6,13 +6,11 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 20:53:59 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/10 05:11:39 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/11 08:05:20 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-#include <stdio.h>
 
 int		cmp_strpart(char *src, char *str, int *beg)
 {
@@ -105,7 +103,8 @@ int		main(int ac, char **av, char **ep)
 	int		i;
 	char	**parse;
 	char	**cmd;
-	char	buff[4097];
+	char	prompt[4097];
+	char	nani[5];
 
 	i = 0;
 	(void)ac;
@@ -117,7 +116,7 @@ int		main(int ac, char **av, char **ep)
 	while (1)
 	{
 		ft_putstr(RESET);
-		ft_putend_cl(ft_strrchr(getcwd(buff, 4097), '/') + 1, RED,  " $> ", BLUE);
+		ft_putend_cl(ft_strrchr(getcwd(prompt, 4097), '/') + 1, RED,  " $> ", BLUE);
 		ft_putstr(WHITE);
 		line = get_line(0);
 		parse = NULL;
