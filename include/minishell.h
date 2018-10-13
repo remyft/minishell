@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 20:49:03 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/08 18:47:49 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/13 12:05:13 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 # include "../libft/libft.h"
 # include <sys/types.h>
 # include <sys/stat.h>
-
-char	**parsing(char *cmd);
 
 void	deal_cmd(char **cmd, char ***env);
 
@@ -35,5 +33,7 @@ char	**collect_env(char **ep);
 void	ft_cd(char ***env, char **cmd);
 
 int		ft_exec(char **env, char **cmd);
+
+int		get_var(char **env, char **cmd);
 
 #endif

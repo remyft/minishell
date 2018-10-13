@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/02 19:17:15 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/08 18:56:47 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/13 13:14:23 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void		deal_cmd(char **cmd, char ***env)
 		ft_exit(*env, cmd[1], i);
 	else if ((ft_strcmp(cmd[0], "env") == 0 ||
 				(ft_strcmp(cmd[0], "setenv") == 0 && !cmd[1])) && (i = 1) > -1)
-		while ((*env)[i])
+		while ((*env)[0] && (*env)[i])
 			ft_putendl((*env)[i++]);
 	else if (ft_strcmp(cmd[0], "setenv") == 0)
 		ft_setenv(env, cmd[1], i);

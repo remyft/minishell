@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/06 07:44:52 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/08 11:40:52 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/13 10:41:46 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	get_cd_error(char *path, char *file)
 {
-	int error;
-	struct stat stat;
+	int			error;
+	struct stat	stat;
 
 	error = access(path, F_OK);
 	if (error == -1)
@@ -41,6 +41,25 @@ static void	get_cd_error(char *path, char *file)
 	}
 }
 
+void		ft_cut_path(char *pwd)
+{
+	int		count;
+	int		pos;
+	int		i;
+
+	count = 0;
+	pos = 0;
+	i = -1;
+	while (pwd[++i])
+	{
+		if (pwd[i] == '/' && count <= pos)
+			count = i;
+		else if (pwd[i] == '/' && pos < count)
+			pos = i;
+	}
+	pwd[pos > count ? count : pos] = '\0';
+}
+
 static void	change_dir(char ***env, char *cmd, char *buff, int is_path)
 {
 	char *path;
@@ -59,6 +78,8 @@ static void	change_dir(char ***env, char *cmd, char *buff, int is_path)
 			return (get_cd_error(path, path));
 	}
 	pwd = ft_strjoin("PWD=", path);
+	if (ft_strcmp(cmd, "..") == 0)
+		ft_cut_path(pwd);
 	ft_setenv(env, pwd, 2);
 	free(pwd);
 	pwd = ft_strjoin("OLDPWD=", buff);
@@ -75,8 +96,9 @@ void		ft_cd(char ***env, char **cmd)
 	getcwd(buff, 4097);
 	if (!cmd[1] || ft_strcmp(cmd[1], "--") == 0 || ft_strcmp(cmd[1], "-") == 0)
 	{
-		str = get_env(*env, (!cmd[1] || ft_strcmp(cmd[1], "--") == 0
-					? "HOME" : "OLDPWD"));
+		if (!(str = get_env(*env, (!cmd[1] || ft_strcmp(cmd[1], "--") == 0
+					? "HOME" : "OLDPWD"))))
+			return (ft_putendl("Something happend, path not in the pwd."));
 		if (cmd[1] && ft_strcmp(cmd[1], "-") == 0)
 			ft_putendl(str);
 		change_dir(env, str, buff, 1);

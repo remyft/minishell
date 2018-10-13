@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/06 05:48:08 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/10 00:17:03 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/13 11:01:37 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ char	*replace_str(char *path, char *src, char *replace)
 	int		i;
 	int		j;
 	int		k;
-	int		l;
 	char	*str;
 
 	if (!ft_strstr(path, src))
@@ -50,13 +49,13 @@ char	*replace_str(char *path, char *src, char *replace)
 	while (++k < i)
 		str[k] = path[k];
 	str[k] = '\0';
-	l = -1;
-	while (replace[++l])
-		str[k + l] = replace[l];
+	i = -1;
+	while (replace[++i])
+		str[k + i] = replace[i];
 	k--;
 	while (path[++k + j])
-		str[k + l] = path[k + j];
-	str[k + l] = '\0';
+		str[k + i] = path[k + j];
+	str[k + i] = '\0';
 	return (str);
 }
 

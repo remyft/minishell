@@ -6,7 +6,7 @@
 #    By: rfontain <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/28 20:50:45 by rfontain          #+#    #+#              #
-#    Updated: 2018/10/08 17:27:00 by rfontain         ###   ########.fr        #
+#    Updated: 2018/10/13 12:05:33 by rfontain         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ SRCS =	src/minishell.c			\
 		src/setenv_builtin.c	\
 		src/cd_builtin.c		\
 		src/exec.c				\
+		src/deal_expansions.c	\
 
 OK =      $(GREEN)[OK]$(RESET)		
 

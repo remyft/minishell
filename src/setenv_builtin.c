@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/06 07:43:19 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/11 05:39:09 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/13 13:14:17 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,9 @@ char		**collect_env(char **ep)
 	int		i;
 
 	i = -1;
-	if (!ep || !(env = (char**)malloc(sizeof(char*) * (get_tab_len(ep) + 2))))
-	{
-		ft_putendl("Failed to collect the environment.");
-		exit(2);
-	}
+	if (!ep || !ep[0] || !(env = (char**)malloc(sizeof(char*) * (get_tab_len(ep)
+						+ 2))))
+		return (NULL);
 	while (ep[++i])
 	{
 		if (ft_strstr(ep[i], "HOME") == ep[i] && ep[i][4] == '=')
@@ -68,7 +66,7 @@ char		*get_env(char **env, char *to_get)
 	int		j;
 	char	*tmp;
 
-	i = 0;
+	i = 1;
 	while (env[i] && !cmp_env(env[i], to_get))
 		i++;
 	tmp = NULL;
@@ -82,7 +80,7 @@ char		*get_env(char **env, char *to_get)
 	return (tmp);
 }
 
-void	ft_setenv(char ***env, char *new, int len)
+void		ft_setenv(char ***env, char *new, int len)
 {
 	int i;
 
@@ -109,7 +107,7 @@ void	ft_setenv(char ***env, char *new, int len)
 		ft_putendl("setenv : Too many arguments");
 }
 
-void	ft_unsetenv(char ***env, char **unset)
+void		ft_unsetenv(char ***env, char **unset)
 {
 	int		i;
 	int		j;
@@ -117,14 +115,12 @@ void	ft_unsetenv(char ***env, char **unset)
 	char	*tmp;
 
 	i = 1;
-	j = 1;
+	j = 0;
 	k = 0;
 	while (unset[++k])
 	{
-		while ((*env)[j])
-			if (cmp_env((*env)[j], unset[k]))
-				j++;
-			else
+		while ((*env)[++j])
+			if (!(cmp_env((*env)[j], unset[k])))
 			{
 				tmp = ft_strdup((*env)[j]);
 				if ((*env)[i])
@@ -133,7 +129,6 @@ void	ft_unsetenv(char ***env, char **unset)
 				(*env)[i] = ft_strdup(tmp);
 				free(tmp);
 				i++;
-				j++;
 			}
 		if (i != j)
 			*env = ft_ralloc(env, -1);
