@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/13 12:02:53 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/13 13:19:33 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/13 15:34:49 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int			get_var(char **env, char **cmd)
 		else if (env[0] && cmd[i][0] == '~' && (cmd[i][1] == '/' || !cmd[i][1]))
 		{
 			if (!get_env(env, "HOME"))
-					return (0);
+				return (0);
 			free(cmd[i]);
 			cmd[i] = ft_strdup(ft_strchr(env[0], '=') + 1);
 		}
