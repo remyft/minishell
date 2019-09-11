@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/06 16:15:36 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/13 13:17:42 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/14 10:18:26 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ static char	*get_path(char **env, char *cmd)
 
 void		deal_fork(char **env, char **cmd)
 {
-	execve(cmd[0], cmd, env);
+	if (execve(cmd[0], cmd, env) == -1)
+		ft_putend(cmd[0], " : command not found.\n");
 	free_tab(&env);
 	free_tab(&cmd);
 	exit(0);
@@ -84,7 +85,7 @@ int			ft_exec(char **env, char **cmd)
 	char	*path;
 	int		status;
 
-	if (cmd[0][0] != '/')
+	if (cmd[0][0] != '/' && cmd[0][0] != '.')
 	{
 		if (!(path = get_path(env, cmd[0])))
 			return (0);

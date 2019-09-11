@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/06 07:44:52 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/13 10:41:46 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/11/14 15:52:21 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,29 +57,22 @@ void		ft_cut_path(char *pwd)
 		else if (pwd[i] == '/' && pos < count)
 			pos = i;
 	}
-	pwd[pos > count ? count : pos] = '\0';
+	pwd[pos > count ? pos : count] = '\0';
 }
 
 static void	change_dir(char ***env, char *cmd, char *buff, int is_path)
 {
-	char *path;
-	char *pwd;
+	char	*path;
+	char	*pwd;
+	char	tmp[4097];
 
+	path = !is_path && cmd[0] != '/' ? ft_strjoin(buff, "/") : ft_strdup(cmd);
 	if (!is_path && cmd[0] != '/')
-	{
-		path = ft_strjoin(buff, "/");
-		if (chdir(path = ft_strjoinfree(path, cmd, 1)) == -1)
-			return (get_cd_error(path, cmd));
-	}
-	else
-	{
-		path = ft_strdup(cmd);
-		if (chdir(path) == -1)
-			return (get_cd_error(path, path));
-	}
-	pwd = ft_strjoin("PWD=", path);
-	if (ft_strcmp(cmd, "..") == 0)
-		ft_cut_path(pwd);
+		path = ft_strjoinfree(path, cmd, 1);
+	if (chdir(path) == -1)
+		return (get_cd_error(path, cmd));
+	getcwd(tmp, 4096);
+	pwd = ft_strjoin("PWD=", tmp);
 	ft_setenv(env, pwd, 2);
 	free(pwd);
 	pwd = ft_strjoin("OLDPWD=", buff);
@@ -99,7 +92,7 @@ void		ft_cd(char ***env, char **cmd)
 		if (!(str = get_env(*env, (!cmd[1] || ft_strcmp(cmd[1], "--") == 0
 					? "HOME" : "OLDPWD"))))
 			return (ft_putendl("Something happend, path not in the pwd."));
-		if (cmd[1] && ft_strcmp(cmd[1], "-") == 0)
+		if (cmd[1] && ft_strcmp(cmd[1], "-") == 0 && chdir(str) != -1)
 			ft_putendl(str);
 		change_dir(env, str, buff, 1);
 		free(str);

@@ -6,38 +6,11 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/06 07:43:19 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/13 13:14:17 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/14 11:15:47 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-char		**collect_env(char **ep)
-{
-	char	**env;
-	char	*tmp;
-	int		ntmp;
-	int		i;
-
-	i = -1;
-	if (!ep || !ep[0] || !(env = (char**)malloc(sizeof(char*) * (get_tab_len(ep)
-						+ 2))))
-		return (NULL);
-	while (ep[++i])
-	{
-		if (ft_strstr(ep[i], "HOME") == ep[i] && ep[i][4] == '=')
-			env[0] = ft_strdup(ep[i]);
-		env[i + 1] = ft_strdup(ep[i]);
-	}
-	env[i + 1] = NULL;
-	tmp = get_env(env, "SHLVL");
-	ntmp = ft_atoi(tmp);
-	free(tmp);
-	tmp = ft_strjoinfree("SHLVL=", ft_itoa(ntmp + 1), 2);
-	ft_setenv(&env, tmp, 2);
-	free(tmp);
-	return (env);
-}
 
 static int	cmp_env(char *env, char *new)
 {
@@ -66,7 +39,7 @@ char		*get_env(char **env, char *to_get)
 	int		j;
 	char	*tmp;
 
-	i = 1;
+	i = 0;
 	while (env[i] && !cmp_env(env[i], to_get))
 		i++;
 	tmp = NULL;
@@ -80,15 +53,39 @@ char		*get_env(char **env, char *to_get)
 	return (tmp);
 }
 
+static int	check_var(char *var)
+{
+	int i;
+
+	i = 0;
+	if (ft_isdigit(var[0]))
+	{
+		ft_putendl("setenv : Variable name must begin with a letter.");
+		return (1);
+	}
+	while (var[i] && var[i] != '=')
+	{
+		if (!ft_isalnum(var[i]))
+		{
+			ft_putstr("setenv : Variable name must contain alphanumeric");
+			ft_putendl(" characters.");
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 void		ft_setenv(char ***env, char *new, int len)
 {
 	int i;
 
-	i = 1;
+	if (check_var(new) == 1)
+		return ;
+	i = -1;
 	if (len == 2 && ft_occuc(new, '='))
 	{
-		while ((*env)[i])
-		{
+		while ((*env)[++i])
 			if (ft_strcmp((*env)[i], new) == 0)
 				return ;
 			else if (cmp_env((*env)[i], new))
@@ -97,8 +94,6 @@ void		ft_setenv(char ***env, char *new, int len)
 				(*env)[i] = ft_strdup(new);
 				return ;
 			}
-			i++;
-		}
 		*env = ft_ralloc(env, 1);
 		(*env)[i] = ft_strdup(new);
 		(*env)[++i] = NULL;
@@ -114,11 +109,11 @@ void		ft_unsetenv(char ***env, char **unset)
 	int		k;
 	char	*tmp;
 
-	i = 1;
-	j = 0;
 	k = 0;
 	while (unset[++k])
 	{
+		i = 0;
+		j = -1;
 		while ((*env)[++j])
 			if (!(cmp_env((*env)[j], unset[k])))
 			{

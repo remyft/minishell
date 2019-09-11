@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/13 12:02:53 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/13 15:34:49 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/11/14 12:16:41 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ static int	deal_dollar(char **env, char **cmd, int i)
 int			get_var(char **env, char **cmd)
 {
 	int		i;
+	char	*tmp;
+	char	*tmp_cmd;
 
 	i = -1;
 	while (cmd[++i])
@@ -93,10 +95,13 @@ int			get_var(char **env, char **cmd)
 		}
 		else if (env[0] && cmd[i][0] == '~' && (cmd[i][1] == '/' || !cmd[i][1]))
 		{
-			if (!get_env(env, "HOME"))
+			if (!(tmp = get_env(env, "HOME")))
 				return (0);
+			tmp_cmd = ft_strdup(cmd[i]);
 			free(cmd[i]);
-			cmd[i] = ft_strdup(ft_strchr(env[0], '=') + 1);
+			cmd[i] = replace_str(tmp_cmd, "~", tmp);
+			free(tmp);
+			free(tmp_cmd);
 		}
 	return (1);
 }

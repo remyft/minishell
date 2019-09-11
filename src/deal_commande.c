@@ -6,7 +6,7 @@
 /*   By: rfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/02 19:17:15 by rfontain          #+#    #+#             */
-/*   Updated: 2018/10/13 13:14:23 by rfontain         ###   ########.fr       */
+/*   Updated: 2018/10/14 10:42:27 by rfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,21 +66,22 @@ static void	ft_exit(char **env, char *ex, int len)
 
 void		deal_cmd(char **cmd, char ***env)
 {
-	int i;
+	int len;
 
-	i = 0;
-	while (cmd[i])
-		i++;
+	len = get_tab_len(cmd);
 	if (ft_strcmp(cmd[0], "exit") == 0)
-		ft_exit(*env, cmd[1], i);
+		ft_exit(*env, cmd[1], len);
 	else if ((ft_strcmp(cmd[0], "env") == 0 ||
-				(ft_strcmp(cmd[0], "setenv") == 0 && !cmd[1])) && (i = 1) > -1)
-		while ((*env)[0] && (*env)[i])
-			ft_putendl((*env)[i++]);
+				(ft_strcmp(cmd[0], "setenv") == 0 && !cmd[1])))
+	{
+		len = 0;
+		while ((*env)[0] && (*env)[len])
+			ft_putendl((*env)[len++]);
+	}
 	else if (ft_strcmp(cmd[0], "setenv") == 0)
-		ft_setenv(env, cmd[1], i);
+		ft_setenv(env, cmd[1], len);
 	else if (ft_strcmp(cmd[0], "echo") == 0)
-		ft_echo(cmd, i);
+		ft_echo(cmd, len);
 	else if (ft_strcmp(cmd[0], "cd") == 0)
 		ft_cd(env, cmd);
 	else if (ft_strcmp(cmd[0], "unsetenv") == 0)
