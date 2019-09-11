@@ -6,7 +6,7 @@ _Basic command intepreter in C_
 ## Build & Run
 
 ```bash
-git clone https://github.com/remyft/minishell
+git clone https://github.com/remyft/minishell.git
 cd minishell && make
 ./minishell
 ```
